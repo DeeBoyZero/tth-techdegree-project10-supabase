@@ -108,7 +108,9 @@ router.post('/users', asyncHandler(async (req, res) => {
 /* GET Courses (read) route */
 router.get('/courses', asyncHandler(async (req, res) => {
   const courses = await Course.findAll({
-    attributes: ['id', 'title', 'description', 'estimatedTime', 'materialsNeeded', 'userId'],
+    // include: [{model: User, attributes: ['id', 'firstName', 'lastName']}],
+    attributes: ['id', 'title', 'description', 'estimatedTime', 'materialsNeeded'],
+    include: [{model: User}],
   });
   res.json(courses);
 }));
@@ -118,7 +120,9 @@ router.get('/courses/:id', asyncHandler(async (req, res) => {
     where: {
       id: req.params.id,
     },
-    attributes: ['id', 'title', 'description', 'estimatedTime', 'materialsNeeded', 'userId'],
+    // include: [{model: User, attributes: ['id', 'firstName', 'lastName']}],
+    attributes: ['id', 'title', 'description', 'estimatedTime', 'materialsNeeded'],
+    include: [{model: User}],
   });
   if (course) {
     res.json(course);
