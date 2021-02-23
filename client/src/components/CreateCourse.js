@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-const CreateCourse = ({ authenticatedUser }) => {
+const CreateCourse = ({ authenticatedUser, data, currentUsername, currentUserPass }) => {
 
-  const currentUser = authenticatedUser;
+  const currentUser = authenticatedUser || '';
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -12,12 +12,29 @@ const CreateCourse = ({ authenticatedUser }) => {
 
   let history = useHistory();
 
-  const handleCancel = () => {
-    history.push("/");
+  const course = {
+    title,
+    description,
+    estimatedTime,
+    materialsNeeded
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    data.createCourse(course, currentUsername, currentUserPass)
+    .then( errors => {
+      if (errors.length) {
+        console.log(errors)
+      } else {
+        history.push("/")  
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      // this.props.history.push('/error');
+    });
+
   }
 
   const handleTitleChange = (event) => {
@@ -35,6 +52,9 @@ const CreateCourse = ({ authenticatedUser }) => {
   const handleMaterialsChange = (event) => {
     const value = event.target.value;
     setMaterialsNeeded(value)
+  }
+  const handleCancel = () => {
+    history.push("/");
   }
 
   return (

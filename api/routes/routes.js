@@ -9,7 +9,7 @@ const User = require('../models').User;
 const Course = require('../models').Course;
 // Import bcrypt module
 const bcrypt = require('bcrypt');
-// Import basic-auth module for autehntica middleware
+// Import basic-auth module for authentication middleware
 const auth = require("basic-auth");
 
 // Handler function to wrap each route.
@@ -28,6 +28,8 @@ function asyncHandler(cb) {
 const authenticateUser = async (req, res, next) => {
   let message;
 
+  res.setHeader('Access-Control-Allow-Credentials', true);
+
   // Parse the user's credentials from the Authorization header.
   const credentials = auth(req);
 
@@ -42,7 +44,7 @@ const authenticateUser = async (req, res, next) => {
       );
       if (authenticated) {
         console.log(
-          `Authentication successfull for user: ${user.emailAddress}`
+          `Authentication successful for user: ${user.emailAddress}`
         );
 
         req.currentUser = user;
@@ -112,6 +114,7 @@ router.get('/courses', asyncHandler(async (req, res) => {
     attributes: ['id', 'title', 'description', 'estimatedTime', 'materialsNeeded'],
     include: [{model: User}],
   });
+  
   res.json(courses);
 }));
 /* GET a simple Course by id (read) route */
@@ -121,7 +124,7 @@ router.get('/courses/:id', asyncHandler(async (req, res) => {
       id: req.params.id,
     },
     // include: [{model: User, attributes: ['id', 'firstName', 'lastName']}],
-    attributes: ['id', 'title', 'description', 'estimatedTime', 'materialsNeeded'],
+    attributes: ['id', 'title', 'description', 'estimatedTime', 'materialsNeeded', 'userId'],
     include: [{model: User}],
   });
   if (course) {

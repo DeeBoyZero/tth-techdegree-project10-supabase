@@ -1,9 +1,77 @@
-import React from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 
-const UpdateCourse = () => {
+const UpdateCourse = ({data, currentUsername, currentUserPass}) => {
 
   let history = useHistory();
+
+  const { id } = useParams();
+
+  const [course, setCourse] = useState([]);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [estimatedTime, setEstimatedTime] = useState('');
+  const [materialsNeeded, setMaterialsNeeded] = useState('');
+
+  const getCourseDetail = () => {
+      return fetch(`http://localhost:5000/api/courses/${id}`)
+        .then(res => res.json())
+        .then( (courseData) => {
+          setCourse(courseData);
+          setTitle(courseData.title);
+          setDescription(courseData.description);
+          setEstimatedTime(courseData.estimatedTime);
+          setMaterialsNeeded(courseData.materialsNeeded);
+        })
+        .catch(err => {
+          console.error(err);
+        })
+  }
+
+  const courseUpdated = {
+    id,
+    title,
+    description,
+    estimatedTime,
+    materialsNeeded
+  }
+
+  useEffect(() => {
+    getCourseDetail();
+  }, [])
+
+  const handleTitleChange = (event) => {
+    const value = event.target.value;
+    setTitle(value)
+  }
+  const handleDescChange = (event) => {
+    const value = event.target.value;
+    setDescription(value)
+  }
+  const handleEstimatedTimeChange = (event) => {
+    const value = event.target.value;
+    setEstimatedTime(value)
+  }
+  const handleMaterialsChange = (event) => {
+    const value = event.target.value;
+    setMaterialsNeeded(value)
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    data.updateCourse(courseUpdated, currentUsername, currentUserPass)
+      .then( errors => {
+        if (errors.length) {
+          console.log(errors)
+        } else {
+          history.push("/")        }
+      })
+      .catch((err) => {
+        console.log(err);
+        // this.props.history.push('/error');
+      });
+  }
 
   const handleCancel = () => {
     history.push("/");
@@ -13,16 +81,16 @@ const UpdateCourse = () => {
     <div className="bounds course--detail">
       <h1>Update Course</h1>
         <div>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="grid-66">
               <div className="course--header">
                 <h4 className="course--label">Course</h4>
                 <div><input id="title" name="title" type="text" className="input-title course--title--input" placeholder="Course title..."
-                    value="Build a Basic Bookcase" /></div>
-                <p>By Joe Smith</p>
+                    value={title || ''} onChange={handleTitleChange} /></div>
+                {course.User ? <p>By {course.User.firstName} {course.User.lastName}</p> : <p></p>}
               </div>
               <div className="course--description">
-                <div><textarea id="description" name="description" className="" placeholder="Course description..."></textarea></div>
+                <div><textarea id="description" name="description" className="" placeholder="Course description..." value={description || ''} onChange={handleDescChange} /></div>
               </div>
             </div>
             <div className="grid-25 grid-right">
@@ -31,12 +99,11 @@ const UpdateCourse = () => {
                   <li className="course--stats--list--item">
                     <h4>Estimated Time</h4>
                     <div><input id="estimatedTime" name="estimatedTime" type="text" className="course--time--input"
-                        placeholder="Hours" value="14 hours" /></div>
+                        placeholder="Hours" value={estimatedTime || ''} onChange={handleEstimatedTimeChange} /></div>
                   </li>
                   <li className="course--stats--list--item">
                     <h4>Materials Needed</h4>
-                    <div><textarea id="materialsNeeded" name="materialsNeeded" className="" placeholder="List materials...">
-                    </textarea></div>
+                    <div><textarea id="materialsNeeded" name="materialsNeeded" className="" placeholder="List materials..." value={materialsNeeded || ''} onChange={handleMaterialsChange} /></div>
                   </li>
                 </ul>
               </div>

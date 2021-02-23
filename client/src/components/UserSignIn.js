@@ -18,7 +18,7 @@ const UserSignIn = ({ signIn }) => {
         if(user === null) {
           setErrors(['Sign-in was unsuccessful']);
         } else {
-          console.log(location);
+          // console.log(location);
           history.push("/");
         }
       })

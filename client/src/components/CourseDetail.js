@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useHistory} from 'react-router-dom';
 
-const CourseDetail = () => {
+const CourseDetail = ({ authenticatedUser, data, currentUsername, currentUserPass }) => {
+
+  let history = useHistory();
+
+  const currentUser = authenticatedUser || '';
 
   const { id } = useParams()
 
@@ -16,13 +20,18 @@ const CourseDetail = () => {
         })
   }
 
-  const deleteCourse = async () => {
-    await fetch(`http://localhost:5000/api/courses/${id}`, {
-      method: 'DELETE',
+  const deleteCourse = () => {
+    data.deleteCourse(id, currentUsername, currentUserPass)
+    .then( errors => {
+      if (errors.length) {
+        console.log(errors)
+      } else {
+        history.push("/")        }
     })
-      .catch(err => {
-        console.error(err);
-      })
+    .catch((err) => {
+      console.log(err);
+      // this.props.history.push('/error');
+    });
   }
 
   useEffect(() => {
@@ -34,7 +43,7 @@ const CourseDetail = () => {
     <div>
         <div className="actions--bar">
           <div className="bounds">
-            <div className="grid-100"><span><Link className="button" to={`/courses/${id}/update`}>Update Course</Link><Link className="button" onClick={deleteCourse} to="#">Delete Course</Link></span><Link
+            <div className="grid-100">{currentUser.id === course.userId ? <span><Link className="button" to={`/courses/${id}/update`}>Update Course</Link><Link className="button" onClick={deleteCourse} to="/">Delete Course</Link></span> : null }<Link
                 className="button button-secondary" to="/">Return to List</Link></div>
           </div>
         </div>
