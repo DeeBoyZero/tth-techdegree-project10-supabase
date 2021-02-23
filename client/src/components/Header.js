@@ -1,26 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 
-const Header = ({ authenticatedUser }) => {
+const Header = ({context}) => {
 
-  // let isLoggedin = false;
-
-  // useEffect(() => {
-  //   if(authenticatedUser) {
-  //     isLoggedin = true;
-  //   }
-  // }, [isLoggedin])
+  const authUser = context.authenticatedUser;
 
   return (
-    
+
     <div className="header">
       <div className="bounds">
         <h1 className="header--logo">Courses</h1>
         <nav>
-          {authenticatedUser ? (
+          {authUser ? (
             <>
-              <span>Welcome, {authenticatedUser.firstName}!</span>
+              <span>Welcome, {authUser.firstName}!</span>
               <Link to="/signout">Sign Out</Link>
             </>
           ) : (

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useHistory} from 'react-router-dom';
 
-const CourseDetail = ({ authenticatedUser, data, currentUsername, currentUserPass }) => {
+const CourseDetail = ({ context }) => {
 
   let history = useHistory();
 
-  const currentUser = authenticatedUser || '';
+  const currentUser = context.authenticatedUser || '';
 
   const { id } = useParams()
 
@@ -21,7 +21,7 @@ const CourseDetail = ({ authenticatedUser, data, currentUsername, currentUserPas
   }
 
   const deleteCourse = () => {
-    data.deleteCourse(id, currentUsername, currentUserPass)
+    context.data.deleteCourse(id, context.currentUsername, context.currentUserPass)
     .then( errors => {
       if (errors.length) {
         console.log(errors)

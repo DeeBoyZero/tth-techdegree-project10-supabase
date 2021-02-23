@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import ErrorsDisplay from './ErrorsDisplay';
 
-const CreateCourse = ({ authenticatedUser, data, currentUsername, currentUserPass }) => {
+const CreateCourse = ({ context }) => {
 
-  const currentUser = authenticatedUser || '';
+  const currentUser = context.authenticatedUser || '';
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [estimatedTime, setEstimatedTime] = useState('');
   const [materialsNeeded, setMaterialsNeeded] = useState('');
+  const [errors, setErrors] = useState([]);
 
   let history = useHistory();
 
@@ -22,10 +24,10 @@ const CreateCourse = ({ authenticatedUser, data, currentUsername, currentUserPas
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    data.createCourse(course, currentUsername, currentUserPass)
+    context.data.createCourse(course, context.currentUsername, context.currentUserPass)
     .then( errors => {
       if (errors.length) {
-        console.log(errors)
+        setErrors(errors)
       } else {
         history.push("/")  
       }
@@ -61,6 +63,7 @@ const CreateCourse = ({ authenticatedUser, data, currentUsername, currentUserPas
     <div className="bounds course--detail">
     <h1>Create Course</h1>
       <div>
+        <ErrorsDisplay errors={errors} />
         <form onSubmit={handleSubmit}>
           <div className="grid-66">
             <div className="course--header">

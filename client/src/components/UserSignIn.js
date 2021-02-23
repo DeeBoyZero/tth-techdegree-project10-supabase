@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useHistory, useLocation, Redirect } from 'react-router-dom';
 
-const UserSignIn = ({ signIn }) => {
+const UserSignIn = ({ context }) => {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -13,7 +13,8 @@ const UserSignIn = ({ signIn }) => {
   const handleSubmit = (e) => {
 
     e.preventDefault();
-    signIn(username, password)
+    // console.log(context.actions.signIn(username, password))
+    context.actions.signIn(username, password)
       .then((user) => {
         if(user === null) {
           setErrors(['Sign-in was unsuccessful']);

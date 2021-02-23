@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
+import ErrorsDisplay from './ErrorsDisplay';
 
-const UpdateCourse = ({data, currentUsername, currentUserPass}) => {
+const UpdateCourse = ({context}) => {
 
   let history = useHistory();
 
@@ -12,6 +13,7 @@ const UpdateCourse = ({data, currentUsername, currentUserPass}) => {
   const [description, setDescription] = useState('');
   const [estimatedTime, setEstimatedTime] = useState('');
   const [materialsNeeded, setMaterialsNeeded] = useState('');
+  const [errors, setErrors] = useState([]);
 
   const getCourseDetail = () => {
       return fetch(`http://localhost:5000/api/courses/${id}`)
@@ -60,13 +62,14 @@ const UpdateCourse = ({data, currentUsername, currentUserPass}) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    data.updateCourse(courseUpdated, currentUsername, currentUserPass)
-      .then( errors => {
-        if (errors.length) {
-          console.log(errors)
-        } else {
-          history.push("/")        }
-      })
+    context.data.updateCourse(courseUpdated, context.currentUsername, context.currentUserPass)
+    .then( errors => {
+      if (errors.length) {
+        setErrors(errors)
+      } else {
+        history.push("/")  
+      }
+    })
       .catch((err) => {
         console.log(err);
         // this.props.history.push('/error');
@@ -81,6 +84,7 @@ const UpdateCourse = ({data, currentUsername, currentUserPass}) => {
     <div className="bounds course--detail">
       <h1>Update Course</h1>
         <div>
+          <ErrorsDisplay errors={errors} />
           <form onSubmit={handleSubmit}>
             <div className="grid-66">
               <div className="course--header">

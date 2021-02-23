@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import ErrorsDisplay from './ErrorsDisplay';
 
-const UserSignUp = ({ signUp, signIn }) => {
+const UserSignUp = ({ context }) => {
 
   let history = useHistory();
 
@@ -26,12 +27,12 @@ const UserSignUp = ({ signUp, signIn }) => {
     const confirmPw = document.getElementById('confirmPassword');
     
     if (pw.value === confirmPw.value) {
-      signUp(user)
+      context.data.createUser(user)
       .then( errors => {
         if (errors.length) {
           setErrors( errors );
         } else {
-          signIn(user.emailAddress, user.password)
+          context.actions.signIn(user.emailAddress, user.password)
           .then((user) => {
             if(user === null) {
               setErrors(['Sign-in was unsuccessful']);
@@ -101,25 +102,6 @@ const UserSignUp = ({ signUp, signIn }) => {
       </div>
     </div>
   )
-
-  function ErrorsDisplay({ errors }) {
-    let errorsDisplay = null;
-  
-    if (errors.length) {
-      errorsDisplay = (
-        <div>
-          <h2 className="validation--errors--label">Validation errors</h2>
-          <div className="validation-errors">
-            <ul>
-              {errors.map((error, i) => <li key={i}>{error}</li>)}
-            </ul>
-          </div>
-        </div>
-      );
-    }
-  
-    return errorsDisplay;
-  }
 }
 
 export default UserSignUp;

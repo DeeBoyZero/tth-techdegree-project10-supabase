@@ -7,7 +7,9 @@ const Context = React.createContext();
 export class Provider extends Component {
 
   state = {
-    authenticatedUser: Cookies.getJSON('authenticatedUser') || null
+    authenticatedUser: Cookies.getJSON('authenticatedUser') || null,
+    currentUsername: null,
+    currentUserPass: null
   };
 
   constructor() {
@@ -15,10 +17,18 @@ export class Provider extends Component {
     this.data = new Data();
   }
 
+  // componentDidUpdate(prevProps, prevState) {
+  //   if(prevState.currentUsername !== this.state.currentUsername) {
+  //     console.log('currentUsername state has changed');
+  //   }
+  // }
+
   render() {
-    const { authenticatedUser } = this.state;
+    const { authenticatedUser, currentUsername, currentUserPass } = this.state;
     const value = {
       authenticatedUser,
+      currentUsername,
+      currentUserPass,
       data: this.data,
       actions: {
         signIn: this.signIn,
@@ -32,26 +42,31 @@ export class Provider extends Component {
     );
   }
 
-  
   signIn = async (username, password) => {
     const user = await this.data.getUser(username, password);
     if (user !== null) {
       this.setState(() => {
         return {
           authenticatedUser: user,
+          currentUsername: username,
+          currentUserPass: password
         };
       });
-      const cookieOptions = {
-        expires: 1
-      };
-      Cookies.set('authenticatedUser', JSON.stringify(user), {cookieOptions});
+      Cookies.set('authenticatedUser', JSON.stringify(user), {expires: 1});
     }
     return user;
   }
 
   signOut = () => {
-    this.setState({ authenticatedUser: null });
     Cookies.remove('authenticatedUser');
+    this.setState(() => { 
+      return { 
+        authenticatedUser: null,
+        currentUsername: null,
+        currentUserPass: null
+      }
+    });
+    
   }
 }
 
