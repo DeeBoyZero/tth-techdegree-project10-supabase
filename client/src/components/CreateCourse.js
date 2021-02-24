@@ -29,12 +29,11 @@ const CreateCourse = ({ context }) => {
       if (errors.length) {
         setErrors(errors)
       } else {
-        history.push("/")  
+        history.push('/')  
       }
     })
     .catch((err) => {
-      console.log(err);
-      // this.props.history.push('/error');
+      history.push('/error');
     });
 
   }

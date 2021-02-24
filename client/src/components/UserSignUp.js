@@ -19,7 +19,6 @@ const UserSignUp = ({ context }) => {
     password
   }
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -47,15 +46,11 @@ const UserSignUp = ({ context }) => {
         }
       })
       .catch((err) => {
-        console.log(err);
-        // this.props.history.push('/error');
+        history.push('/error');
       });
     } else {
       setErrors(['Password does not match.']);
     }
-
-
-
   }
 
   const handleFirstNameChange = (event) => {
@@ -79,7 +74,7 @@ const UserSignUp = ({ context }) => {
   }
 
   const handleCancel = () => {
-    history.push("/");
+    history.push('/');
   }
 
   return (

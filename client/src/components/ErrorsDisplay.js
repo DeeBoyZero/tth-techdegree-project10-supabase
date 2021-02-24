@@ -1,10 +1,11 @@
+import React from 'react';
 import { useEffect } from "react";
 
 const ErrorsDisplay = ({ errors }) => {
   let errorsDisplay = null;
 
   useEffect(() => {
-    
+
   }, [errors])
 
   if (errors.length) {

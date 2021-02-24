@@ -17,13 +17,17 @@ export class Provider extends Component {
     this.data = new Data();
   }
 
-  // componentDidUpdate(prevProps, prevState) {
-  //   if(prevState.currentUsername !== this.state.currentUsername) {
-  //     console.log('currentUsername state has changed');
-  //   }
-  // }
+  componentDidMount() {
+    this.setState(() => {
+      return {
+        currentUsername: localStorage.getItem('username') || null,
+        currentUserPass: localStorage.getItem('password') || null
+      }
+    })
+  }
 
   render() {
+    
     const { authenticatedUser, currentUsername, currentUserPass } = this.state;
     const value = {
       authenticatedUser,
@@ -43,8 +47,11 @@ export class Provider extends Component {
   }
 
   signIn = async (username, password) => {
+    
     const user = await this.data.getUser(username, password);
     if (user !== null) {
+      localStorage.setItem("username", username);
+      localStorage.setItem("password", password);
       this.setState(() => {
         return {
           authenticatedUser: user,
@@ -58,6 +65,8 @@ export class Provider extends Component {
   }
 
   signOut = () => {
+    localStorage.removeItem("username");
+    localStorage.removeItem("password");
     Cookies.remove('authenticatedUser');
     this.setState(() => { 
       return { 

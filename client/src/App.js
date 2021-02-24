@@ -1,5 +1,4 @@
 import './App.css';
-import React, { useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -16,6 +15,8 @@ import UserSignUp from './components/UserSignUp';
 import UserSignOut from './components/UserSignOut';
 import CreateCourse from './components/CreateCourse';
 import UpdateCourse from './components/UpdateCourse';
+import Forbidden from './components/Forbidden';
+import UnhandledError from './components/UnhandledError';
 
 import withContext from './Context';
 import PrivateRoute from './PrivateRoute';
@@ -47,6 +48,8 @@ export default function App() {
           <Route path="/signin" component={UserSignInWithContext} />
           <Route path="/signup" component={UserSignUpWithContext} />
           <Route path="/signout" component={UserSignOutWithContext} />
+          <Route path="/forbidden" component={Forbidden} />
+          <Route path="/error" component={UnhandledError} />
           <Route component={NotFound} />
         </Switch>
       </div>

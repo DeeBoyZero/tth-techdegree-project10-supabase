@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useHistory, useLocation, Redirect } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 
 const UserSignIn = ({ context }) => {
 
@@ -13,14 +13,12 @@ const UserSignIn = ({ context }) => {
   const handleSubmit = (e) => {
 
     e.preventDefault();
-    // console.log(context.actions.signIn(username, password))
     context.actions.signIn(username, password)
       .then((user) => {
         if(user === null) {
           setErrors(['Sign-in was unsuccessful']);
         } else {
-          // console.log(location);
-          history.push("/");
+          location.state ? history.push(location.state.from.pathname) : history.goBack();
         }
       })
       .catch((err) => {
