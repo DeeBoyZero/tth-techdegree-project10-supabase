@@ -2,8 +2,8 @@
  
 ## By Mathieu Desilets
 
-## A course display React app using node/express + sqlite as backend
-## Use Basic-Auth for authentication
+### A course display React app using node/express + sqlite as backend
+### Use Basic-Auth for authentication
 
 ### Techno used:
 - HTML
