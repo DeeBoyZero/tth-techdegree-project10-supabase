@@ -5,7 +5,7 @@ import Data from './Data';
 const Context = React.createContext(); 
 
 export class Provider extends Component {
-
+  // Setup the context states
   state = {
     authenticatedUser: Cookies.getJSON('authenticatedUser') || null,
     currentUsername: null,
@@ -16,7 +16,7 @@ export class Provider extends Component {
     super();
     this.data = new Data();
   }
-
+  // Checks to see if user is present in the localStorage
   componentDidMount() {
     this.setState(() => {
       return {
@@ -29,6 +29,7 @@ export class Provider extends Component {
   render() {
     
     const { authenticatedUser, currentUsername, currentUserPass } = this.state;
+    // Provide the states values and actions for the consumers
     const value = {
       authenticatedUser,
       currentUsername,
@@ -46,8 +47,8 @@ export class Provider extends Component {
     );
   }
 
+  // User signIn action that setup localStorage for credentials and a HTTP cookie
   signIn = async (username, password) => {
-    
     const user = await this.data.getUser(username, password);
     if (user !== null) {
       localStorage.setItem("username", username);
@@ -64,6 +65,7 @@ export class Provider extends Component {
     return user;
   }
 
+  // User signOut action that delete localStorage credentials and the HTTP cookie and reset the states to null
   signOut = () => {
     localStorage.removeItem("username");
     localStorage.removeItem("password");

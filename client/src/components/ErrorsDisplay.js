@@ -1,6 +1,7 @@
 import React from 'react';
 import { useEffect } from "react";
 
+// Component used to display errors in the forms of the application
 const ErrorsDisplay = ({ errors }) => {
   let errorsDisplay = null;
 

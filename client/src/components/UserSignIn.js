@@ -3,17 +3,22 @@ import { Link, useHistory, useLocation } from 'react-router-dom';
 import ErrorsDisplay from './ErrorsDisplay';
 
 const UserSignIn = ({ context }) => {
-
+  
+  // Setup the user states
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  // Setup the error state 
   const [errors, setErrors] = useState([]);
-
+  // instantiate a history object
   let history = useHistory();
+  // instantiate a location object
   let location = useLocation();
 
+  // Handles the form submit event
   const handleSubmit = (e) => {
 
     e.preventDefault();
+    // Calls the data signIn action
     context.actions.signIn(username, password)
       .then((user) => {
         if(user === null) {
@@ -26,16 +31,15 @@ const UserSignIn = ({ context }) => {
         console.error(err);
       })
   }
-
+  // Handles cancel button logic
   const handleCancel = () => {
     history.push("/");
   }
-
+  // Handles form fields changes
   const handleUsernameChange = (event) => {
     const value = event.target.value;
     setUsername(value)
   }
-
   const handlePasswordChange = (event) => {
     const value = event.target.value;
     setPassword(value)

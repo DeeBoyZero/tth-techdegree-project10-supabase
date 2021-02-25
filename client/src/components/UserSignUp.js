@@ -4,14 +4,17 @@ import ErrorsDisplay from './ErrorsDisplay';
 
 const UserSignUp = ({ context }) => {
 
+  // instantiate a history object
   let history = useHistory();
-
+  // Setup the user's states
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [emailAddress, setEmailAddress] = useState('');
   const [password, setPassword] = useState('');
+  // Setup the errors state
   const [errors, setErrors] = useState([]);
 
+  // Associate the states to a User object
   const user = {
     firstName,
     lastName,
@@ -19,18 +22,21 @@ const UserSignUp = ({ context }) => {
     password
   }
 
+  // Handles the form submit event
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const pw = document.getElementById('password');
     const confirmPw = document.getElementById('confirmPassword');
-    
+    // Checks to see if password and confirm matches
     if (pw.value === confirmPw.value) {
+      // Calls the context createUser action
       context.data.createUser(user)
       .then( errors => {
         if (errors.length) {
           setErrors( errors );
         } else {
+          // Calls the context signIn action
           context.actions.signIn(user.emailAddress, user.password)
           .then((user) => {
             if(user === null) {
@@ -52,26 +58,24 @@ const UserSignUp = ({ context }) => {
     }
   }
 
+  // Handles form fields changes
   const handleFirstNameChange = (event) => {
     const value = event.target.value;
     setFirstName(value)
   }
-
   const handleLastNameChange = (event) => {
     const value = event.target.value;
     setLastName(value)
   }
-
   const handleEmailChange = (event) => {
     const value = event.target.value;
     setEmailAddress(value)
   }
-
   const handlePasswordChange = (event) => {
     const value = event.target.value;
     setPassword(value)
   }
-
+  // Handles cancel button logic
   const handleCancel = () => {
     history.push('/');
   }

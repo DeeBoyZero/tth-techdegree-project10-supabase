@@ -6,6 +6,7 @@ import {
   Redirect
 } from "react-router-dom";
 
+// Import all the required components for the app
 import Courses from "./components/Courses";
 import Header from "./components/Header";
 import NotFound from "./components/NotFound";
@@ -17,10 +18,12 @@ import CreateCourse from './components/CreateCourse';
 import UpdateCourse from './components/UpdateCourse';
 import Forbidden from './components/Forbidden';
 import UnhandledError from './components/UnhandledError';
-
+// Import the withContext helper (HOC)
 import withContext from './Context';
+// Import the PrivateRoute HOC
 import PrivateRoute from './PrivateRoute';
 
+// Provides context to the components
 const HeaderWithContext = withContext(Header);
 const CourseDetailWithContext = withContext(CourseDetail);
 const UserSignInWithContext = withContext(UserSignIn);

@@ -1,28 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useHistory, Redirect } from 'react-router-dom';
+// Import React-Markdown to display markdown format in the description and materials sections
 import ReactMarkdown from 'react-markdown';
+// import IsMounted helper function
 import useIsMounted from './helpers/IsMounted';
 
 const CourseDetail = ({ context }) => {
+  // get access to isMounted variable
   const isMounted = useIsMounted();
-
+  // instantiate a history object
   let history = useHistory();
-
+  // check to see if user is authenticated
   const currentUser = context.authenticatedUser || '';
-
+  // get the id from the url param
   const { id } = useParams()
-
+  // setup the course state
   const [course, setCourse] = useState([]);
-
+  // Fetch data function
   const getCourseDetail = async () => {
     try {
       const response = await fetch(`http://localhost:5000/api/courses/${id}`);
+      // If response is 200 or 304, the data is returned in json format
       if (response.status === 200 || response.status === 304) {
         return response.json().then(data => data);
       }
+      // If 404 is received, set the course state to the status code
       else if (response.status === 404) {
         return 404;
       }
+      // If 500 is received, set the course state to the status code
       else if (response.status === 500) {
         return 500;
       }
@@ -32,6 +38,7 @@ const CourseDetail = ({ context }) => {
   }
 
   const deleteCourse = () => {
+    // Calls the data deleteCourse action
     context.data.deleteCourse(id, context.currentUsername, context.currentUserPass)
     .then( errors => {
       if (errors.length) {
@@ -48,6 +55,7 @@ const CourseDetail = ({ context }) => {
   useEffect(() => {
     (async () => {
       const myCourse = await getCourseDetail();
+      // Check to see if component is mounted before trying to update the state
       if(isMounted.current) {
         setCourse(myCourse);
       }
@@ -55,8 +63,10 @@ const CourseDetail = ({ context }) => {
   }, [])
 
   if (course) {
+    // Redirects to notfound route if 404 received
     if (course === 404) {
       return <Redirect to="/notfound" />
+      // Redirects to error route if 500 received
     } else if (course === 500) {
       return <Redirect to="/error" /> 
     } else {

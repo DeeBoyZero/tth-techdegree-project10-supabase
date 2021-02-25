@@ -3,17 +3,18 @@ import { useHistory } from 'react-router-dom';
 import ErrorsDisplay from './ErrorsDisplay';
 
 const CreateCourse = ({ context }) => {
-
+  // check to see if user is authenticated
   const currentUser = context.authenticatedUser || '';
-
+  // setup the courses details states
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [estimatedTime, setEstimatedTime] = useState('');
   const [materialsNeeded, setMaterialsNeeded] = useState('');
+  // setup the errors state
   const [errors, setErrors] = useState([]);
-
+  // instantiate a history object
   let history = useHistory();
-
+  // Assign states to course object
   const course = {
     title,
     description,
@@ -21,12 +22,14 @@ const CreateCourse = ({ context }) => {
     materialsNeeded
   }
 
+  // Handles the form submit event
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  // Calls the data createCourse action
     context.data.createCourse(course, context.currentUsername, context.currentUserPass)
     .then( errors => {
       if (errors.length) {
+        // set the errors state to pass to the ErrorsDisplay component
         setErrors(errors)
       } else {
         history.push('/')  
@@ -35,9 +38,9 @@ const CreateCourse = ({ context }) => {
     .catch((err) => {
       history.push('/error');
     });
-
   }
 
+  // Handles form fields changes
   const handleTitleChange = (event) => {
     const value = event.target.value;
     setTitle(value)
@@ -54,6 +57,7 @@ const CreateCourse = ({ context }) => {
     const value = event.target.value;
     setMaterialsNeeded(value)
   }
+  // Handles cancel button logic
   const handleCancel = () => {
     history.push("/");
   }

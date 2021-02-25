@@ -1,4 +1,5 @@
 export default class Data {
+  // Helper function that helps with the Fetch calls with an Autorization Header
   api(path, method = 'GET', body = null, requiresAuth = false, credentials = null) {
     
     const options = {
@@ -28,7 +29,7 @@ export default class Data {
       return null;
     }
     else {
-      throw new Error();
+      throw new Error('Something went wrong...');
     }
   }
 
@@ -43,7 +44,7 @@ export default class Data {
       });
     }
     else {
-      throw new Error();
+      throw new Error('Something went wrong...');
     }
   }
 
@@ -58,7 +59,7 @@ export default class Data {
       });
     }
     else {
-      throw new Error();
+      throw new Error('Something went wrong...');
     }
   }
 
