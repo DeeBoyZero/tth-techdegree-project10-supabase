@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link, useHistory, Redirect } from 'react-router-dom';
 // Import React-Markdown to display markdown format in the description and materials sections
 import ReactMarkdown from 'react-markdown';
+// Import gfm plugin for react-markdown for strikethrough, tables and more ...
+import gfm from 'remark-gfm';
+
 // import IsMounted helper function
 import useIsMounted from './helpers/IsMounted';
 
@@ -85,7 +88,7 @@ const CourseDetail = ({ context }) => {
                   {course.User ? <p>By {course.User.firstName} {course.User.lastName}</p> : <p></p>}
                 </div>
                 <div className="course--description">
-                  {course.description ? <ReactMarkdown source={course.description} /> : null}
+                  {course.description ? <ReactMarkdown plugins={[gfm]} source={course.description} /> : null}
                 </div>
               </div>
               <div className="grid-25 grid-right">
@@ -100,7 +103,7 @@ const CourseDetail = ({ context }) => {
                       {course.materialsNeeded ? 
                         <ul>
                           {course.materialsNeeded.split(/\n/).map((item,index) => {
-                            return <li key={index}><ReactMarkdown source={item} /></li>
+                            return <li key={index}><ReactMarkdown plugins={[gfm]} source={item} /></li>
                           })}
                         </ul>
                         :

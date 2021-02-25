@@ -2,8 +2,7 @@ import './App.css';
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Redirect
+  Route
 } from "react-router-dom";
 
 // Import all the required components for the app
@@ -42,14 +41,14 @@ export default function App() {
 
         <Switch>
           <Route exact path="/" component={Courses} />
-          <Route path="/courses/:id/detail" component={CourseDetailWithContext} />
+          <Route exact path="/courses/:id/detail" component={CourseDetailWithContext} />
           <PrivateRoute exact path="/courses/create" component={CreateCourseWithContext} />
           <PrivateRoute exact path="/courses/:id/update" component={UpdateCourseWithContext} />
-          <Route path="/signin" component={UserSignInWithContext} />
-          <Route path="/signup" component={UserSignUpWithContext} />
-          <Route path="/signout" component={UserSignOutWithContext} />
-          <Route path="/forbidden" component={Forbidden} />
-          <Route path="/error" component={UnhandledError} />
+          <Route exact path="/signin" component={UserSignInWithContext} />
+          <Route exact path="/signup" component={UserSignUpWithContext} />
+          <Route exact path="/signout" component={UserSignOutWithContext} />
+          <Route exact path="/forbidden" component={Forbidden} />
+          <Route exact path="/error" component={UnhandledError} />
           <Route component={NotFound} />
         </Switch>
       </div>
