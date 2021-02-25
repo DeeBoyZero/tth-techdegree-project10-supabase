@@ -42,9 +42,6 @@ export default function App() {
 
         <Switch>
           <Route exact path="/" component={Courses} />
-          <Route exact path="/courses">
-            <Redirect to="/" />
-          </Route>
           <Route path="/courses/:id/detail" component={CourseDetailWithContext} />
           <PrivateRoute exact path="/courses/create" component={CreateCourseWithContext} />
           <PrivateRoute exact path="/courses/:id/update" component={UpdateCourseWithContext} />
