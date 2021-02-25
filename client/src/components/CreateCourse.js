@@ -59,7 +59,7 @@ const CreateCourse = ({ context }) => {
   }
   // Handles cancel button logic
   const handleCancel = () => {
-    history.push("/");
+    history.push('/');
   }
 
   if (course) {

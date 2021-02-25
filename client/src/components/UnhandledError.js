@@ -6,7 +6,7 @@ const UnhandledError = () => {
     <div className="bounds">
     <h1>Error</h1>
     <p>Sorry! We just encountered an unexpected error.</p>
-    <Link to='/'>Go back to home</Link>
+    <Link to="/">Go back to home</Link>
   </div>
   )
 }

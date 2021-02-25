@@ -33,7 +33,7 @@ const UserSignIn = ({ context }) => {
   }
   // Handles cancel button logic
   const handleCancel = () => {
-    history.push("/");
+    history.push('/');
   }
   // Handles form fields changes
   const handleUsernameChange = (event) => {
