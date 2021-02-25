@@ -112,7 +112,7 @@ router.get('/courses', asyncHandler(async (req, res) => {
   const courses = await Course.findAll({
     // include: [{model: User, attributes: ['id', 'firstName', 'lastName']}],
     attributes: ['id', 'title', 'description', 'estimatedTime', 'materialsNeeded'],
-    include: [{model: User}],
+    include: [{model: User, attributes: ['id', 'firstName', 'lastName']}],
   });
   
   res.json(courses);
@@ -125,7 +125,7 @@ router.get('/courses/:id', asyncHandler(async (req, res) => {
     },
     // include: [{model: User, attributes: ['id', 'firstName', 'lastName']}],
     attributes: ['id', 'title', 'description', 'estimatedTime', 'materialsNeeded', 'userId'],
-    include: [{model: User}],
+    include: [{model: User, attributes: ['id', 'firstName', 'lastName']}],
   });
   if (course) {
     res.json(course);
