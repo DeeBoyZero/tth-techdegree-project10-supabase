@@ -36,7 +36,6 @@ const UserSignUp = ({ context }) => {
             if(user === null) {
               setErrors(['Sign-in was unsuccessful']);
             } else {
-              // console.log(location);
               history.push("/");
             }
           })
@@ -77,26 +76,31 @@ const UserSignUp = ({ context }) => {
     history.push('/');
   }
 
-  return (
-    <div className="bounds">
-      <div className="grid-33 centered signin">
-        <h1>Sign Up</h1>
-        <div>
-          <ErrorsDisplay errors={errors}/>
-          <form onSubmit={handleSubmit}>
-            <div><input id="firstName" name="firstName" type="text" className="" placeholder="First Name" onChange={handleFirstNameChange} value={firstName} /></div>
-            <div><input id="lastName" name="lastName" type="text" className="" placeholder="Last Name" onChange={handleLastNameChange} value={lastName} /></div>
-            <div><input id="emailAddress" name="emailAddress" type="text" className="" placeholder="Email Address" onChange={handleEmailChange} value={emailAddress} /></div>
-            <div><input id="password" name="password" type="password" className="" placeholder="Password" onChange={handlePasswordChange} value={password} /></div>
-            <div><input id="confirmPassword" name="confirmPassword" type="password" className="" placeholder="Confirm Password" defaultValue="" /></div>
-            <div className="grid-100 pad-bottom"><button className="button" type="submit">Sign Up</button><button className="button button-secondary" onClick={handleCancel}>Cancel</button></div>
-          </form>
+  if (user) {
+    return (
+      <div className="bounds">
+        <div className="grid-33 centered signin">
+          <h1>Sign Up</h1>
+          <div>
+            <ErrorsDisplay errors={errors}/>
+            <form onSubmit={handleSubmit}>
+              <div><input id="firstName" name="firstName" type="text" className="" placeholder="First Name" onChange={handleFirstNameChange} value={firstName} /></div>
+              <div><input id="lastName" name="lastName" type="text" className="" placeholder="Last Name" onChange={handleLastNameChange} value={lastName} /></div>
+              <div><input id="emailAddress" name="emailAddress" type="text" className="" placeholder="Email Address" onChange={handleEmailChange} value={emailAddress} /></div>
+              <div><input id="password" name="password" type="password" className="" placeholder="Password" onChange={handlePasswordChange} value={password} /></div>
+              <div><input id="confirmPassword" name="confirmPassword" type="password" className="" placeholder="Confirm Password" defaultValue="" /></div>
+              <div className="grid-100 pad-bottom"><button className="button" type="submit">Sign Up</button><button className="button button-secondary" onClick={handleCancel}>Cancel</button></div>
+            </form>
+          </div>
+          <p>&nbsp;</p>
+          <p>Already have a user account? <Link to="/signin">Click here</Link> to sign in!</p>
         </div>
-        <p>&nbsp;</p>
-        <p>Already have a user account? <Link to="/signin">Click here</Link> to sign in!</p>
       </div>
-    </div>
-  )
+    )
+  } else {
+    return null;
+  }
+
 }
 
 export default UserSignUp;

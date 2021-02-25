@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useHistory, Redirect } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
+import useIsMounted from './helpers/IsMounted';
 
 const CourseDetail = ({ context }) => {
+  const isMounted = useIsMounted();
 
   let history = useHistory();
 
@@ -46,7 +48,9 @@ const CourseDetail = ({ context }) => {
   useEffect(() => {
     (async () => {
       const myCourse = await getCourseDetail();
-      setCourse(myCourse);
+      if(isMounted.current) {
+        setCourse(myCourse);
+      }
     })()
   }, [])
 
@@ -83,7 +87,7 @@ const CourseDetail = ({ context }) => {
                       {course.estimatedTime ? <h3>{course.estimatedTime}</h3> : null}                 
                     </li>
                     <li className="course--stats--list--item">
-                      <h4>Materials Needed (1 per line)</h4>
+                      <h4>Materials Needed</h4>
                       {course.materialsNeeded ? 
                         <ul>
                           {course.materialsNeeded.split(/\n/).map((item,index) => {

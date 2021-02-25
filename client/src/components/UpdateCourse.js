@@ -1,19 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory, useParams, Redirect } from 'react-router-dom';
 import ErrorsDisplay from './ErrorsDisplay';
-
-
-function useIsMounted() {
-  const isMounted = useRef(false);
-
-  useEffect(() => {
-    isMounted.current = true;
-    return () => isMounted.current = false;
-  }, []);
-
-  return isMounted;
-}
-
+import useIsMounted from './helpers/IsMounted';
 
 const UpdateCourse = ({context}) => {
   const isMounted = useIsMounted();
@@ -28,20 +16,21 @@ const UpdateCourse = ({context}) => {
   const [materialsNeeded, setMaterialsNeeded] = useState('');
   const [errors, setErrors] = useState([]);
 
-  const getCourseDetail = () => {
-      return fetch(`http://localhost:5000/api/courses/${id}`)
-        .then(res => res.json())
-        .then( (courseData) => { if(isMounted.current) {
-          setCourse(courseData);
-          setTitle(courseData.title);
-          setDescription(courseData.description);
-          setEstimatedTime(courseData.estimatedTime);
-          setMaterialsNeeded(courseData.materialsNeeded);
-        }
-        })
-        .catch(err => {
-          console.error(err);
-        })
+  const getCourseDetail = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/courses/${id}`);
+      if (response.status === 200 || response.status === 304) {
+        return response.json().then(data => data);
+      }
+      else if (response.status === 404) {
+        return 404;
+      }
+      else if (response.status === 500) {
+        return 500;
+      }
+    } catch (error) {
+      history.push('/error');
+    }
   }
 
   const courseUpdated = {
@@ -53,7 +42,18 @@ const UpdateCourse = ({context}) => {
   }
 
   useEffect(() => {
-    getCourseDetail();
+    (async() => {
+      const courseData = await getCourseDetail();
+      if(isMounted.current) {
+        setCourse(courseData);
+        if (courseData && courseData.title) {
+          setTitle(courseData.title);
+          setDescription(courseData.description);
+          setEstimatedTime(courseData.estimatedTime);
+          setMaterialsNeeded(courseData.materialsNeeded);
+        }
+      }
+    })()
   }, [])
 
   const handleTitleChange = (event) => {
@@ -93,6 +93,12 @@ const UpdateCourse = ({context}) => {
     history.push('/');
   }
 
+  if (course === 404) {
+    return <Redirect to="/notfound" />;
+  } else if (course === 500) {
+    return <Redirect to="/error" />;
+  }
+
   if (course) {
     if (course.userId) {
       if(course.userId === context.authenticatedUser.id) {
@@ -122,7 +128,7 @@ const UpdateCourse = ({context}) => {
                               placeholder="Hours" value={estimatedTime || ''} onChange={handleEstimatedTimeChange} /></div>
                         </li>
                         <li className="course--stats--list--item">
-                          <h4>Materials Needed</h4>
+                          <h4>Materials Needed (1 per line)</h4>
                           <div><textarea id="materialsNeeded" name="materialsNeeded" className="" placeholder="List materials..." value={materialsNeeded || ''} onChange={handleMaterialsChange} /></div>
                         </li>
                       </ul>

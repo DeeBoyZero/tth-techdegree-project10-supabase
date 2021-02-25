@@ -1,34 +1,31 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { Link, useHistory } from 'react-router-dom';
-
-function useIsMounted() {
-  const isMounted = useRef(false);
-
-  useEffect(() => {
-    isMounted.current = true;
-    return () => isMounted.current = false;
-  }, []);
-
-  return isMounted;
-}
-
+import useIsMounted from './helpers/IsMounted';
 
 const Courses = () => {
+  const isMounted = useIsMounted();
   let history = useHistory();
 
   const [courses, setCourses] = useState([]);
 
-  const getCourses = () => {
-      return fetch('http://localhost:5000/api/courses')
-        .then(res => res.json())
-        .then(data => setCourses(data))
-        .catch(err => {
-          return history.push('/error')
-        })        
+  const getCourses = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/courses')
+      if (response.status === 200 || response.status === 304) {
+        return response.json().then(data => data);
+      }
+    } catch (error) {
+      history.push('/error');
+    }       
   }
 
   useEffect(() => {
-    getCourses();
+    (async() => {
+      const coursesData = await getCourses();
+      if (isMounted.current) {
+        setCourses(coursesData);
+      }
+    })()
   }, [])
 
   return (
