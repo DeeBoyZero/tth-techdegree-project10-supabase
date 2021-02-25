@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const Header = ({context}) => {
   // check to see if user is authenticated
-  const authUser = context.authenticatedUser;
+  const authUser = context.authenticatedUser || '';
 
   return (
 
