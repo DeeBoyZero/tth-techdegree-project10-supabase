@@ -1,42 +1,45 @@
 import React, { useState } from 'react';
-import { Link, useHistory, useLocation, Redirect } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
+import ErrorsDisplay from './ErrorsDisplay';
 
-const UserSignIn = ({ signIn }) => {
-
+const UserSignIn = ({ context }) => {
+  
+  // Setup the user states
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  // Setup the error state 
   const [errors, setErrors] = useState([]);
-
+  // instantiate a history object
   let history = useHistory();
+  // instantiate a location object
   let location = useLocation();
 
+  // Handles the form submit event
   const handleSubmit = (e) => {
 
     e.preventDefault();
-    signIn(username, password)
+    // Calls the data signIn action
+    context.actions.signIn(username, password)
       .then((user) => {
         if(user === null) {
           setErrors(['Sign-in was unsuccessful']);
         } else {
-          // console.log(location);
-          history.push("/");
+          location.state ? history.push(location.state.from.pathname) : history.goBack();
         }
       })
       .catch((err) => {
         console.error(err);
       })
   }
-
+  // Handles cancel button logic
   const handleCancel = () => {
     history.push("/");
   }
-
-
+  // Handles form fields changes
   const handleUsernameChange = (event) => {
     const value = event.target.value;
     setUsername(value)
   }
-
   const handlePasswordChange = (event) => {
     const value = event.target.value;
     setPassword(value)
@@ -59,25 +62,6 @@ const UserSignIn = ({ signIn }) => {
     </div>
   </div>
   )
-
-  function ErrorsDisplay({ errors }) {
-    let errorsDisplay = null;
-  
-    if (errors.length) {
-      errorsDisplay = (
-        <div>
-          <h2 className="validation--errors--label">Validation errors</h2>
-          <div className="validation-errors">
-            <ul>
-              {errors.map((error, i) => <li key={i}>{error}</li>)}
-            </ul>
-          </div>
-        </div>
-      );
-    }
-  
-    return errorsDisplay;
-  }
 }
 
 export default UserSignIn;

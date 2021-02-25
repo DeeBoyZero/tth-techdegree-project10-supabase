@@ -5,20 +5,35 @@ import Data from './Data';
 const Context = React.createContext(); 
 
 export class Provider extends Component {
-
+  // Setup the context states
   state = {
-    authenticatedUser: Cookies.getJSON('authenticatedUser') || null
+    authenticatedUser: Cookies.getJSON('authenticatedUser') || null,
+    currentUsername: null,
+    currentUserPass: null
   };
 
   constructor() {
     super();
     this.data = new Data();
   }
+  // Checks to see if user is present in the localStorage
+  componentDidMount() {
+    this.setState(() => {
+      return {
+        currentUsername: localStorage.getItem('username') || null,
+        currentUserPass: localStorage.getItem('password') || null
+      }
+    })
+  }
 
   render() {
-    const { authenticatedUser } = this.state;
+    
+    const { authenticatedUser, currentUsername, currentUserPass } = this.state;
+    // Provide the states values and actions for the consumers
     const value = {
       authenticatedUser,
+      currentUsername,
+      currentUserPass,
       data: this.data,
       actions: {
         signIn: this.signIn,
@@ -32,26 +47,37 @@ export class Provider extends Component {
     );
   }
 
-  
+  // User signIn action that setup localStorage for credentials and a HTTP cookie
   signIn = async (username, password) => {
     const user = await this.data.getUser(username, password);
     if (user !== null) {
+      localStorage.setItem("username", username);
+      localStorage.setItem("password", password);
       this.setState(() => {
         return {
           authenticatedUser: user,
+          currentUsername: username,
+          currentUserPass: password
         };
       });
-      const cookieOptions = {
-        expires: 1
-      };
-      Cookies.set('authenticatedUser', JSON.stringify(user), {cookieOptions});
+      Cookies.set('authenticatedUser', JSON.stringify(user), {expires: 1});
     }
     return user;
   }
 
+  // User signOut action that delete localStorage credentials and the HTTP cookie and reset the states to null
   signOut = () => {
-    this.setState({ authenticatedUser: null });
+    localStorage.removeItem("username");
+    localStorage.removeItem("password");
     Cookies.remove('authenticatedUser');
+    this.setState(() => { 
+      return { 
+        authenticatedUser: null,
+        currentUsername: null,
+        currentUserPass: null
+      }
+    });
+    
   }
 }
 

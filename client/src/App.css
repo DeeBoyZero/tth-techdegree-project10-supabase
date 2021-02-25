@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap');
+
 /* line 7, ../sass/reset.sass */
 a,
 abbr,
@@ -201,13 +203,15 @@ svg {
 
 /* line 5, ../sass/global.sass */
 body {
-  font-family: "Work Sans", sans-serif;
+  /* font-family: "Work Sans", sans-serif; */
+  font-family: 'RocknRoll One', sans-serif;
   background: #fff;
 }
 
 /* line 13, ../sass/global.sass */
 .header {
-  background: #57496e;
+  /* background: #57496e; */
+  background: #28527a;
   padding: 20px 0;
   margin-bottom: 30px;
 }
@@ -282,7 +286,7 @@ h1 {
 
 /* line 61, ../sass/global.sass */
 a {
-  color: #7c689b;
+  color: #32689a;
   cursor: pointer;
   text-decoration: none;
   -webkit-transition: color 0.2s;
@@ -339,7 +343,7 @@ p {
 
 /* line 102, ../sass/global.sass */
 .course--module {
-  background: #7c689b;
+  background: #3875ad;
   border-radius: 8px;
   padding: 30px;
   margin-bottom: 30px;
@@ -434,12 +438,12 @@ p {
 .course--header .course--title {
   font-size: 48px;
   margin-bottom: 15px;
-  color: #332a40;
+  color: #333;
 }
 /* line 171, ../sass/global.sass */
 .course--header p {
   font-size: 18px;
-  color: #b1a5c4;
+  color: #659bcd;
   font-weight: 100;
 }
 /* line 176, ../sass/global.sass */
@@ -623,13 +627,13 @@ textarea:-ms-input-placeholder {
 }
 /* line 485, ../sass/global.sass */
 textarea:focus {
-  border-color: #7c689b;
+  border-color: #1f4160;
 }
 
 /* line 488, ../sass/global.sass */
 input {
   width: 100%;
-  color: #332a40;
+  color: #333;
   border-radius: 8px;
   border: 1px solid #ccc4d8;
   padding: 15px;
@@ -678,7 +682,7 @@ input:focus {
 
 /* line 507, ../sass/global.sass */
 .button {
-  background: #7c689b;
+  background: #3875ad;
   color: #fff;
   font-family: "Work Sans", sans-serif;
   font-size: 18px;
@@ -701,14 +705,14 @@ input:focus {
 }
 /* line 522, ../sass/global.sass */
 .button:not(.button-secondary):hover {
-  background: #63537d;
+  background: #1f4160;
 }
 
 /* line 525, ../sass/global.sass */
 .button-secondary {
-  color: #7c689b;
+  color: #1f4160;
   background: none;
-  box-shadow: 0 0 0 2px #7c689b inset;
+  box-shadow: 0 0 0 2px #3875ad inset;
   -webkit-transition: box-shadow 0.2s, color 0.2s;
   -moz-transition: box-shadow 0.2s, color 0.2s;
   -ms-transition: box-shadow 0.2s, color 0.2s;
@@ -717,8 +721,8 @@ input:focus {
 }
 /* line 530, ../sass/global.sass */
 .button-secondary:hover {
-  color: #63537d;
-  box-shadow: 0 0 0 2px #63537d inset;
+  color: #1f4160;
+  box-shadow: 0 0 0 2px #1f4160 inset;
 }
 
 /* adds additional padding to the bottom of an element */
@@ -739,11 +743,11 @@ input:focus {
 
 /* styles the validation errors */
 .validation--errors--label {
-  color: #7c689b;
+  color: #3875ad;
   font-size: 28px;
 }
 .validation-errors ul {
-  color: #7c689b;
+  color: #3875ad;
   padding: 15px 0 40px 10px;
 }
 

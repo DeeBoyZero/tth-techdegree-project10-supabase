@@ -1,26 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 
-const Header = ({ authenticatedUser }) => {
-
-  // let isLoggedin = false;
-
-  // useEffect(() => {
-  //   if(authenticatedUser) {
-  //     isLoggedin = true;
-  //   }
-  // }, [isLoggedin])
+const Header = ({context}) => {
+  // check to see if user is authenticated
+  const authUser = context.authenticatedUser || '';
 
   return (
-    
+
     <div className="header">
       <div className="bounds">
         <h1 className="header--logo">Courses</h1>
         <nav>
-          {authenticatedUser ? (
+          {/* Display a Welcome message and a logout button if user is looged in */}
+          {authUser ? (
             <>
-              <span>Welcome, {authenticatedUser.firstName}!</span>
+              <span>Welcome, {authUser.firstName}!</span>
               <Link to="/signout">Sign Out</Link>
             </>
           ) : (

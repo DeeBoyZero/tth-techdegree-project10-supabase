@@ -186,7 +186,7 @@ router.put('/courses/:id', authenticateUser, asyncHandler(async (req, res) => {
                 id: req.params.id
               }
             });
-            res.status(204).end();
+            res.location(`/courses/${course.id}`).status(204).end();
         }
       }
     } else {
