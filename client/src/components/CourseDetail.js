@@ -37,19 +37,18 @@ const CourseDetail = ({ context }) => {
     }
   }
 
-  const deleteCourse = () => {
-    // Calls the data deleteCourse action
-    context.data.deleteCourse(id, context.currentUsername, context.currentUserPass)
-    .then( errors => {
-      if (errors.length) {
-        console.log(errors);
+  const deleteCourse = async () => {
+    try {
+      // Calls the data deleteCourse action
+      const response = await context.data.deleteCourse(id, context.currentUsername, context.currentUserPass);
+      if (response.length) {
+        history.push('/error');
       } else {
-        history.push("/");  
+        history.push('/');
       }
-    })
-    .catch((err) => {
+    } catch (error) {
       history.push('/error');
-    });
+    } 
   }
 
   useEffect(() => {
@@ -60,7 +59,7 @@ const CourseDetail = ({ context }) => {
         setCourse(myCourse);
       }
     })()
-  }, [])
+  }, []);
 
   if (course) {
     // Redirects to notfound route if 404 received
@@ -74,7 +73,7 @@ const CourseDetail = ({ context }) => {
         <div>
             <div className="actions--bar">
               <div className="bounds">
-                <div className="grid-100">{currentUser.id === course.userId ? <span><Link className="button" to={`/courses/${id}/update`}>Update Course</Link><Link className="button" onClick={deleteCourse} to="/">Delete Course</Link></span> : null }<Link
+                <div className="grid-100">{currentUser.id === course.userId ? <span><Link className="button" to={`/courses/${id}/update`}>Update Course</Link><Link className="button" onClick={deleteCourse} to="#">Delete Course</Link></span> : null }<Link
                     className="button button-secondary" to="/">Return to List</Link></div>
               </div>
             </div>

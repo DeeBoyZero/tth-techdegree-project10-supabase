@@ -38,7 +38,7 @@ const Courses = () => {
         setCourses(coursesData);
       }
     })()
-  }, [])
+  }, []);
 
   if (courses === 404) {
     // Redirects to notfound route if 404 received

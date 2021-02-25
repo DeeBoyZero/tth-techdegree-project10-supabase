@@ -20,7 +20,7 @@ const CreateCourse = ({ context }) => {
     description,
     estimatedTime,
     materialsNeeded
-  }
+  };
 
   // Handles the form submit event
   const handleSubmit = (e) => {
@@ -30,9 +30,9 @@ const CreateCourse = ({ context }) => {
     .then( errors => {
       if (errors.length) {
         // set the errors state to pass to the ErrorsDisplay component
-        setErrors(errors)
+        setErrors(errors);
       } else {
-        history.push('/')  
+        history.push('/');
       }
     })
     .catch((err) => {
@@ -43,19 +43,19 @@ const CreateCourse = ({ context }) => {
   // Handles form fields changes
   const handleTitleChange = (event) => {
     const value = event.target.value;
-    setTitle(value)
+    setTitle(value);
   }
   const handleDescChange = (event) => {
     const value = event.target.value;
-    setDescription(value)
+    setDescription(value);
   }
   const handleEstimatedTimeChange = (event) => {
     const value = event.target.value;
-    setEstimatedTime(value)
+    setEstimatedTime(value);
   }
   const handleMaterialsChange = (event) => {
     const value = event.target.value;
-    setMaterialsNeeded(value)
+    setMaterialsNeeded(value);
   }
   // Handles cancel button logic
   const handleCancel = () => {
@@ -90,7 +90,7 @@ const CreateCourse = ({ context }) => {
                         placeholder="Hours" value={estimatedTime} onChange={handleEstimatedTimeChange} /></div>
                   </li>
                   <li className="course--stats--list--item">
-                    <h4>Materials Needed</h4>
+                    <h4>Materials Needed (1 per line)</h4>
                     <div><textarea id="materialsNeeded" name="materialsNeeded" className="" placeholder="List materials..." value={materialsNeeded} onChange={handleMaterialsChange} /></div>
                   </li>
                 </ul>
