@@ -32,3 +32,4 @@ Open [http://localhost:5000/api/courses](http://localhost:5000/api/courses) to v
 
 The page will reload if you make edits.\
 
+
