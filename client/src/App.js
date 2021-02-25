@@ -3,13 +3,13 @@ import {
   BrowserRouter as Router,
   Switch,
   Route
-} from "react-router-dom";
+} from 'react-router-dom';
 
 // Import all the required components for the app
-import Courses from "./components/Courses";
-import Header from "./components/Header";
-import NotFound from "./components/NotFound";
-import CourseDetail from "./components/CourseDetail";
+import Courses from './components/Courses';
+import Header from './components/Header';
+import NotFound from './components/NotFound';
+import CourseDetail from './components/CourseDetail';
 import UserSignIn from './components/UserSignIn';
 import UserSignUp from './components/UserSignUp';
 import UserSignOut from './components/UserSignOut';
