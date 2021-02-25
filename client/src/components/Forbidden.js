@@ -1,14 +1,14 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 
-const NotFound = () => {
+const Forbidden = () => {
   return (
     <div className="bounds">
-    <h1>Not Found</h1>
-    <p>Sorry! We couldn't find the page you're looking for.</p>
+    <h1>Forbidden</h1>
+    <p>Oh oh! You can't access this page.</p>
     <Link to='/'>Go back to home</Link>
   </div>
   )
 }
 
-export default NotFound;
+export default Forbidden;
