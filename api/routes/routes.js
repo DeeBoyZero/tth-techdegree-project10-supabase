@@ -81,6 +81,7 @@ router.get('/users', authenticateUser, asyncHandler(async (req, res) => {
 
 /* POST (create) users route */
 router.post('/users', asyncHandler(async (req, res) => {
+
   try {
     if (req.body.password) {
       // Hash the password before saving it to the db
@@ -92,8 +93,10 @@ router.post('/users', asyncHandler(async (req, res) => {
         password: hashedPassword
       });
       res.location('/').status(201).end();
-    } else {
-      res.status(400).json({message: "password is required"});
+    } 
+    else {
+      const errors = ["password is required"];
+      res.status(400).json({ errors });
     }
   } catch(error) {
     if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {

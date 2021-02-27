@@ -24,38 +24,42 @@ const UserSignUp = ({ context }) => {
 
   // Handles the form submit event
   const handleSubmit = (e) => {
+    
     e.preventDefault();
 
     const pw = document.getElementById('password');
     const confirmPw = document.getElementById('confirmPassword');
-    // Checks to see if password and confirm matches
-    if (pw.value === confirmPw.value) {
-      // Calls the context createUser action
-      context.data.createUser(user)
-      .then( errors => {
-        if (errors.length) {
-          setErrors( errors );
-        } else {
-          // Calls the context signIn action
-          context.actions.signIn(user.emailAddress, user.password)
-          .then((user) => {
-            if(user === null) {
-              setErrors(['Sign-in was unsuccessful']);
-            } else {
-              history.push("/");
-            }
-          })
-          .catch((err) => {
-            console.error(err);
-          })
-        }
-      })
-      .catch((err) => {
-        history.push('/error');
-      });
+
+    // if (pw.value === '') {
+    //   setErrors(['Please provide a password']);
+    if (pw.value !== confirmPw.value) {
+      setErrors(['Password does not match']);
     } else {
-      setErrors(['Password does not match.']);
+      context.data.createUser(user)
+        .then(errors => {
+          if (errors.length) {
+            setErrors(errors);
+          } else {
+            // Calls the context signIn action
+            context.actions.signIn(user.emailAddress, user.password)
+            .then((user) => {
+              if(user === null) {
+                setErrors(['Sign-in was unsuccessful']);
+              } else {
+                history.push("/");
+              }
+            })
+            .catch((err) => {
+            history.push('/error');
+            })
+          }
+        })
+        .catch((err) => {
+          history.push('/error');
+        })
     }
+
+    
   }
 
   // Handles form fields changes
@@ -80,7 +84,7 @@ const UserSignUp = ({ context }) => {
     history.push('/');
   }
 
-  if (user) {
+
     return (
       <div className="bounds">
         <div className="grid-33 centered signin">
@@ -101,9 +105,6 @@ const UserSignUp = ({ context }) => {
         </div>
       </div>
     )
-  } else {
-    return null;
-  }
 
 }
 

@@ -34,31 +34,32 @@ export default class Data {
   }
 
   async createUser(user) {
-    const response = await this.api(`http://localhost:5000/api/users`, 'POST', user);
-    if (response.status === 201) {
-      return [];
-    }
-    else if (response.status === 400) {
-      return response.json().then(data => {
-        return data.errors;
-      });
-    }
-    else {
-      throw new Error('Something went wrong...');
-    }
+      const response = await this.api(`http://localhost:5000/api/users`, 'POST', user);
+      if (response.status === 201) {
+        return [];
+      }
+      else if (response.status === 400) {
+        return response.json().then(data => {
+          return data.errors;
+        });
+      }
+      else {
+        throw new Error('Something went wrong...');
+      }
   }
 
   async createCourse(course, username, password) {
-    const response = await this.api(`http://localhost:5000/api/courses`, 'POST', course, true, { username, password });
-    if (response.status === 201) {
-      return [];
-    }
-    else if (response.status === 400) {
-      return response.json().then(data => {
-        return data.errors;
-      });
-    }
-    else {
+    try {
+      const response = await this.api(`http://localhost:5000/api/courses`, 'POST', course, true, { username, password });
+      if (response.status === 201) {
+        return [];
+      }
+      else if (response.status === 400) {
+        return response.json().then(data => {
+          return data.errors;
+        });
+      }
+    } catch (err) {
       throw new Error('Something went wrong...');
     }
   }
