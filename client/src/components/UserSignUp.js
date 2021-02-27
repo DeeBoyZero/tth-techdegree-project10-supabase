@@ -30,11 +30,11 @@ const UserSignUp = ({ context }) => {
     const pw = document.getElementById('password');
     const confirmPw = document.getElementById('confirmPassword');
 
-    // if (pw.value === '') {
-    //   setErrors(['Please provide a password']);
+    // Checks to see if password and confirmPassword matches
     if (pw.value !== confirmPw.value) {
       setErrors(['Password does not match']);
     } else {
+      // Calls the data createUser action
       context.data.createUser(user)
         .then(errors => {
           if (errors.length) {
