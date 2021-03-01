@@ -82,27 +82,59 @@ router.get('/users', authenticateUser, asyncHandler(async (req, res) => {
 /* POST (create) users route */
 router.post('/users', asyncHandler(async (req, res) => {
 
-  try {
-    if (req.body.password) {
+  // This will contain error messages from manual fields validations.
+  const errors = [];
+
+  // Manual validators on on the form fields
+  if (!req.body.firstName) {
+    errors.push('Please provide a "firstName"');
+  }
+  if (!req.body.lastName) {
+    errors.push('Please provide a "lastName"');
+  }
+  if (!req.body.emailAddress) {
+    errors.push('Please provide an "emailAddress"');
+  }
+
+  if (req.body.emailAddress) {
+    const checkUniq = await User.findOne({
+      where: {
+        emailAddress: req.body.emailAddress
+      },
+    });
+    if (checkUniq) {
+      errors.push('Please use a unique email address');
+    }
+  }
+  if (!req.body.password) {
+    errors.push('Please provide a password');
+  }
+
+  if (!req.body.passwordConfirm) {
+    errors.push('Please confirm your password');
+  }
+
+  if (req.body.password && req.body.passwordConfirm) {
+    if (req.body.password !== req.body.passwordConfirm) {
+      errors.push("Password don't match");
+    }
+  }
+
+  if (errors.length) {
+      res.status(400).json({errors});
+  } else {
+    try {
       // Hash the password before saving it to the db
       const hashedPassword = bcrypt.hashSync(req.body.password, 10);
-      await User.create({
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        emailAddress: req.body.emailAddress,
-        password: hashedPassword
-      });
-      res.location('/').status(201).end();
-    } 
-    else {
-      const errors = ["password is required"];
-      res.status(400).json({ errors });
-    }
-  } catch(error) {
-    if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
-      const errors = error.errors.map(err => err.message);
-      res.status(400).json({ errors });   
-    } else {
+        await User.create({
+          firstName: req.body.firstName,
+          lastName: req.body.lastName,
+          emailAddress: req.body.emailAddress,
+          password: req.body.password ? hashedPassword : req.body.password,
+        });
+        res.location('/').status(201).end();
+
+    } catch(error) {
       throw error;
     }
   }
